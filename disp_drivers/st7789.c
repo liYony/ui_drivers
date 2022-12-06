@@ -117,4 +117,4 @@ void st7789_set_orientation(rt_uint8_t orientation)
     spi_write_data((void *)&data[orientation], 1);
 }
 
-#endif
+#endif /* PKG_DISPLAY_CONTROLLER_ST7789 */
