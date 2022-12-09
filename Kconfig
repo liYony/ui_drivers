@@ -13,7 +13,7 @@ if PKG_USING_UI_DRIVERS
         config PKG_DISPLAY_CONTROLLER_ST7789
             bool "st7789"
 
-        config PKG_DISPLAY_CONTROLLER_ST7735
+        config PKG_DISPLAY_CONTROLLER_ST7735S
             bool "st7735"
     endchoice
 

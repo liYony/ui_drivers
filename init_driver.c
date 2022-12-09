@@ -20,7 +20,9 @@ static int hw_driver_port_init(void)
     spi_device_attach();
     spi_port_config();
     spi_gpio_config();
+#if defined(PKG_DISP_BACKLIGHT_SWITCH) || defined(PKG_DISP_BACKLIGHT_PWM)
     backlight_init();
+#endif
     disp_driver_init();
     return 0;
 }
