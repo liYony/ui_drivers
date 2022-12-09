@@ -83,11 +83,11 @@ void st7735s_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_end, r
 void st7735s_set_orientation(rt_uint8_t orientation)
 {
     /*
-        Portrait:  0xC8 = ST77XX_MADCTL_MX | ST77XX_MADCTL_MY | ST77XX_MADCTL_BGR
-        Landscape: 0xA8 = ST77XX_MADCTL_MY | ST77XX_MADCTL_MV | ST77XX_MADCTL_BGR
+        Portrait:  0xC0 = ST77XX_MADCTL_MX | ST77XX_MADCTL_MY | ST77XX_MADCTL_RGB
+        Landscape: 0xA0 = ST77XX_MADCTL_MY | ST77XX_MADCTL_MV | ST77XX_MADCTL_RGB
         Remark: "inverted" is ignored here
     */
-    rt_uint8_t data[] = {0xC8, 0xC8, 0xA8, 0xA8};
+    rt_uint8_t data[] = {0xC0, 0xC0, 0xA0, 0xA0};
     spi_write_cmd(ST7735_MADCTL);
     spi_write_data((void *)&data[orientation], 1);
 }
