@@ -6,41 +6,41 @@
 #include "spi_port.h"
 #include "backlight_port.h"
 
-#if defined PKG_DISPLAY_CONTROLLER_ILI9341
+#if defined SSUD_DISP_CONTROLLER_ILI9341
 #include "ili9341.h"
-#elif defined PKG_DISPLAY_CONTROLLER_ILI9481
+#elif defined SSUD_DISP_CONTROLLER_ILI9481
 #include "ili9481.h"
-#elif defined PKG_DISPLAY_CONTROLLER_ILI9488
+#elif defined SSUD_DISP_CONTROLLER_ILI9488
 #include "ili9488.h"
-#elif defined PKG_DISPLAY_CONTROLLER_ST7789
+#elif defined SSUD_DISP_CONTROLLER_ST7789
 #include "st7789.h"
-#elif defined PKG_DISPLAY_CONTROLLER_ST7796S
+#elif defined SSUD_DISP_CONTROLLER_ST7796S
 #include "st7796s.h"
-#elif defined PKG_DISPLAY_CONTROLLER_ST7735S
+#elif defined SSUD_DISP_CONTROLLER_ST7735S
 #include "st7735s.h"
-#elif defined PKG_DISPLAY_CONTROLLER_HX8357
+#elif defined SSUD_DISP_CONTROLLER_HX8357
 #include "hx8357.h"
-#elif defined PKG_DISPLAY_CONTROLLER_ILI9486
+#elif defined SSUD_DISP_CONTROLLER_ILI9486
 #include "ili9486.h"
-#elif defined PKG_DISPLAY_CONTROLLER_SH1107
+#elif defined SSUD_DISP_CONTROLLER_SH1107
 #include "sh1107.h"
-#elif defined PKG_DISPLAY_CONTROLLER_SSD1306
+#elif defined SSUD_DISP_CONTROLLER_SSD1306
 #include "ssd1306.h"
-#elif defined PKG_DISPLAY_CONTROLLER_FT81X
+#elif defined SSUD_DISP_CONTROLLER_FT81X
 #include "FT81x.h"
-#elif defined PKG_DISPLAY_CONTROLLER_IL3820
+#elif defined SSUD_DISP_CONTROLLER_IL3820
 #include "il3820.h"
-#elif defined PKG_DISPLAY_CONTROLLER_RA8875
+#elif defined SSUD_DISP_CONTROLLER_RA8875
 #include "ra8875.h"
-#elif defined PKG_DISPLAY_CONTROLLER_GC9A01
+#elif defined SSUD_DISP_CONTROLLER_GC9A01
 #include "GC9A01.h"
-#elif defined PKG_DISPLAY_CONTROLLER_JD79653A
+#elif defined SSUD_DISP_CONTROLLER_JD79653A
 #include "jd79653a.h"
-#elif defined PKG_DISPLAY_CONTROLLER_UC8151D
+#elif defined SSUD_DISP_CONTROLLER_UC8151D
 #include "uc8151d.h"
-#elif defined PKG_DISPLAY_CONTROLLER_ILI9163C
+#elif defined SSUD_DISP_CONTROLLER_ILI9163C
 #include "ili9163c.h"
-#elif defined PKG_DISPLAY_CONTROLLER_PCD8544
+#elif defined SSUD_DISP_CONTROLLER_PCD8544
 #include "pcd8544.h"
 #endif
 
@@ -70,7 +70,7 @@ typedef struct
     rt_uint8_t databytes; // No of data in data; bit 7 = delay after set; 0xFF = end of cmds.
 } lcd_init_cmd_t;
 
-void disp_driver_init(void);
-void disp_driver_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_end, rt_uint16_t y_end, void *pcolor);
+void ssud_disp_driver_init(void);
+void ssud_disp_driver_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_end, rt_uint16_t y_end, void *pcolor);
 
 #endif // !__DISP_DRIVER_H_

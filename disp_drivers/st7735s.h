@@ -1,13 +1,11 @@
 #ifndef ST7735S_H
 #define ST7735S_H
 
-#ifdef PKG_DISPLAY_CONTROLLER_ST7735S
+#ifdef SSUD_DISP_CONTROLLER_ST7735S
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#define ST7735S_INVERT_COLORS 0
 
 // Defines are taken from
 //      https://raw.githubusercontent.com/m5stack/M5StickC/master/src/utility/ST7735_Defines.h
@@ -99,14 +97,14 @@ extern "C" {
 #define ST77XX_MADCTL_RGB   0x00
 #define ST77XX_MADCTL_BGR   0x08
 
-void st7735s_init(void);
-void st7735s_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_end, rt_uint16_t y_end, void *pcolor);
-void st7735s_set_orientation(rt_uint8_t orientation);
+void ssud_st7735s_init(void);
+void ssud_st7735s_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_end, rt_uint16_t y_end, void *pcolor);
+void ssud_st7735s_set_orientation(rt_uint8_t orientation);
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
-#endif /* PKG_DISPLAY_CONTROLLER_ST7735S */
+#endif /* SSUD_DISP_CONTROLLER_ST7735S */
 
 #endif /*ST7735S_H*/

@@ -1,9 +1,9 @@
 #include "disp_driver.h"
 
-#ifdef PKG_DISPLAY_CONTROLLER_ILI9163C
+#ifdef SSUD_DISP_CONTROLLER_ILI9163C
 #include "ili9163c.h"
 
-void ili9163c_init(void)
+void ssud_ili9163c_init(void)
 {
     lcd_init_cmd_t ili_init_cmds[] = {
         {ILI9163C_SWRESET, {0}, 0x80},       // Software reset, 0 args, w/delay 120ms
@@ -16,11 +16,11 @@ void ili9163c_init(void)
         {ILI9163C_PWCTR3, {0x02}, 1},        // Power control, 1 arg
         {ILI9163C_VMCTR1, {0x20, 0x55}, 2},  // Power control, 1 arg, no delay:
         {ILI9163C_VMCOFFS, {0x40}, 1},       // VCOM Offset
-#if ILI9163C_INVERT_COLORS == 1
+#ifdef SSUD_DISP_INVERT_COLORS
         {ILI9163C_INVON, {0}, 0}, // set inverted mode
 #else
         {ILI9163C_INVOFF, {0}, 0}, // set non-inverted mode
-#endif
+#endif /* SSUD_DISP_INVERT_COLORS */
         {ILI9163C_COLMOD, {0x5}, 1},                                                                                        // set color mode, 1 arg, no delay: 16-bit color
         {ILI9163C_SDDC, {0}, 1},                                                                                            // set source driver direction control
         {ILI9163C_GAMCTL, {0x01}, 1},                                                                                       // set source driver direction control
@@ -35,48 +35,48 @@ void ili9163c_init(void)
     rt_uint16_t cmd = 0;
     while (ili_init_cmds[cmd].databytes != 0xff)
     {
-        spi_write_cmd(ili_init_cmds[cmd].cmd);
-        spi_write_data(ili_init_cmds[cmd].data, ili_init_cmds[cmd].databytes & 0x1F);
+        ssud_spi_write_cmd(ili_init_cmds[cmd].cmd);
+        ssud_spi_write_data(ili_init_cmds[cmd].data, ili_init_cmds[cmd].databytes & 0x1F);
         if (ili_init_cmds[cmd].databytes & 0x80)
         {
-            rt_thread_delay(RT_TICK_PER_SECOND / 10);
+            rt_thread_mdelay(100);
         }
         cmd++;
     }
 
-    ili9163c_set_orientation(PKG_INDEX_DISPLAY_ORIENTATION);
+    ssud_ili9163c_set_orientation(SSUD_DISP_ORIENTATION);
 }
 
-void ili9163c_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_end, rt_uint16_t y_end, void *pcolor)
+void ssud_ili9163c_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_end, rt_uint16_t y_end, void *pcolor)
 {
     rt_uint8_t data[4];
 
     /*Column addresses*/
-    spi_write_cmd(ILI9163C_CASET);
+    ssud_spi_write_cmd(ILI9163C_CASET);
     data[0] = (x_start >> 8) & 0xFF;
     data[1] = x_start & 0xFF;
     data[2] = (x_end >> 8) & 0xFF;
     data[3] = x_end & 0xFF;
-    spi_write_data(data, 4);
+    ssud_spi_write_data(data, 4);
 
     /*Page addresses*/
-    spi_write_cmd(ILI9163C_RASET);
+    ssud_spi_write_cmd(ILI9163C_RASET);
     data[0] = (y_start >> 8) & 0xFF;
     data[1] = y_start & 0xFF;
     data[2] = (y_end >> 8) & 0xFF;
     data[3] = y_end & 0xFF;
-    spi_write_data(data, 4);
+    ssud_spi_write_data(data, 4);
 
     /*Memory write*/
-    spi_write_cmd(ILI9163C_RAMWR);
-    spi_write_color(x_start, y_start, x_end, y_end, pcolor);
+    ssud_spi_write_cmd(ILI9163C_RAMWR);
+    ssud_spi_write_color(x_start, y_start, x_end, y_end, pcolor);
 }
 
-void ili9163c_set_orientation(rt_uint8_t orientation)
+void ssud_ili9163c_set_orientation(rt_uint8_t orientation)
 {
     rt_uint8_t data[] = {0x48, 0x88, 0xA8, 0x68};
-    spi_write_cmd(ILI9163C_MADCTL);
-    spi_write_data((void *)&data[orientation], 1);
+    ssud_spi_write_cmd(ILI9163C_MADCTL);
+    ssud_spi_write_data((void *)&data[orientation], 1);
 }
 
-#endif /* PKG_DISPLAY_CONTROLLER_ILI9163C */
+#endif /* SSUD_DISP_CONTROLLER_ILI9163C */

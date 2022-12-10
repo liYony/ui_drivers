@@ -1,11 +1,11 @@
 #include "disp_driver.h"
 
-#ifdef PKG_DISPLAY_CONTROLLER_ST7735S
+#ifdef SSUD_DISP_CONTROLLER_ST7735S
 #include "st7735s.h"
 
 rt_uint8_t st7735s_portrait_mode = 0;
 
-void st7735s_init(void)
+void ssud_st7735s_init(void)
 {
     lcd_init_cmd_t init_cmds[] = {
         {ST7735_SWRESET, {0}, 0x80},                               // Software reset, 0 args, w/delay 150
@@ -20,11 +20,11 @@ void st7735s_init(void)
         {ST7735_PWCTR4, {0x8A, 0x2A}, 2},                          // Power control, 2 args, no delay: BCLK/2, Opamp current small & Medium low
         {ST7735_PWCTR5, {0x8A, 0xEE}, 2},                          // Power control, 2 args, no delay:
         {ST7735_VMCTR1, {0x0E}, 1},                                // Power control, 1 arg, no delay:
-#if ST7735S_INVERT_COLORS == 1
+#ifdef SSUD_DISP_INVERT_COLORS
         {ST7735_INVON, {0}, 0}, // set inverted mode
 #else
         {ST7735_INVOFF, {0}, 0}, // set non-inverted mode
-#endif
+#endif /* SSUD_DISP_INVERT_COLORS */
         {ST7735_COLMOD, {0x05}, 1},                                                                                             // set color mode, 1 arg, no delay: 16-bit color
         {ST7735_GMCTRP1, {0x02, 0x1c, 0x07, 0x12, 0x37, 0x32, 0x29, 0x2d, 0x29, 0x25, 0x2B, 0x39, 0x00, 0x01, 0x03, 0x10}, 16}, // 16 args, no delay:
         {ST7735_GMCTRN1, {0x03, 0x1d, 0x07, 0x06, 0x2E, 0x2C, 0x29, 0x2D, 0x2E, 0x2E, 0x37, 0x3F, 0x00, 0x00, 0x02, 0x10}, 16}, // 16 args, no delay:
@@ -37,50 +37,50 @@ void st7735s_init(void)
     rt_uint16_t cmd = 0;
     while (init_cmds[cmd].databytes != 0xff)
     {
-        spi_write_cmd(init_cmds[cmd].cmd);
-        spi_write_data(init_cmds[cmd].data, init_cmds[cmd].databytes & 0x1F);
+        ssud_spi_write_cmd(init_cmds[cmd].cmd);
+        ssud_spi_write_data(init_cmds[cmd].data, init_cmds[cmd].databytes & 0x1F);
         if (init_cmds[cmd].databytes & 0x80)
         {
-            rt_thread_delay(RT_TICK_PER_SECOND / 10);
+            rt_thread_mdelay(100);
         }
         cmd++;
     }
 
-#if (PKG_INDEX_DISPLAY_ORIENTATION == 0) || (PKG_INDEX_DISPLAY_ORIENTATION == 1)
+#if (SSUD_DISP_ORIENTATION == 0) || (SSUD_DISP_ORIENTATION == 1)
     st7735s_portrait_mode = 1;
 #else
     st7735s_portrait_mode = 0;
 #endif
 
-    st7735s_set_orientation(PKG_INDEX_DISPLAY_ORIENTATION);
+    ssud_st7735s_set_orientation(SSUD_DISP_ORIENTATION);
 }
 
-void st7735s_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_end, rt_uint16_t y_end, void *pcolor)
+void ssud_st7735s_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_end, rt_uint16_t y_end, void *pcolor)
 {
     rt_uint8_t data[4];
 
     /*Column addresses*/
-    spi_write_cmd(0x2A);
+    ssud_spi_write_cmd(0x2A);
     data[0] = (x_start >> 8) & 0xFF;
     data[1] = (x_start & 0xFF) + (st7735s_portrait_mode ? COLSTART : ROWSTART);
     data[2] = (x_end >> 8) & 0xFF;
     data[3] = (x_end & 0xFF) + (st7735s_portrait_mode ? COLSTART : ROWSTART);
-    spi_write_data(data, 4);
+    ssud_spi_write_data(data, 4);
 
     /*Page addresses*/
-    spi_write_cmd(0x2B);
+    ssud_spi_write_cmd(0x2B);
     data[0] = (y_start >> 8) & 0xFF;
     data[1] = (y_start & 0xFF) + (st7735s_portrait_mode ? ROWSTART : COLSTART);
     data[2] = (y_end >> 8) & 0xFF;
     data[3] = (y_end & 0xFF) + (st7735s_portrait_mode ? ROWSTART : COLSTART);
-    spi_write_data(data, 4);
+    ssud_spi_write_data(data, 4);
 
     /*Memory write*/
-    spi_write_cmd(ST7735_RAMWR);
-    spi_write_color(x_start, y_start, x_end, y_end, pcolor);
+    ssud_spi_write_cmd(ST7735_RAMWR);
+    ssud_spi_write_color(x_start, y_start, x_end, y_end, pcolor);
 }
 
-void st7735s_set_orientation(rt_uint8_t orientation)
+void ssud_st7735s_set_orientation(rt_uint8_t orientation)
 {
     /*
         Portrait:  0xC0 = ST77XX_MADCTL_MX | ST77XX_MADCTL_MY | ST77XX_MADCTL_RGB
@@ -88,8 +88,8 @@ void st7735s_set_orientation(rt_uint8_t orientation)
         Remark: "inverted" is ignored here
     */
     rt_uint8_t data[] = {0xC0, 0xC0, 0xA0, 0xA0};
-    spi_write_cmd(ST7735_MADCTL);
-    spi_write_data((void *)&data[orientation], 1);
+    ssud_spi_write_cmd(ST7735_MADCTL);
+    ssud_spi_write_data((void *)&data[orientation], 1);
 }
 
-#endif /* PKG_DISPLAY_CONTROLLER_ST7735S */
+#endif /* SSUD_DISP_CONTROLLER_ST7735S */

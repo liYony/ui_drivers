@@ -1,14 +1,12 @@
 #ifndef ST7789_H
 #define ST7789_H
 
-#ifdef PKG_DISPLAY_CONTROLLER_ST7789
+#ifdef SSUD_DISP_CONTROLLER_ST7789
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
-#define ST7789_INVERT_COLORS            1
 
 /* ST7789 commands */
 #define ST7789_NOP      0x00
@@ -86,14 +84,14 @@ extern "C"
 #define ST7789_NVMSET       0xFC    // NVM setting
 #define ST7789_PROMACT      0xFE    // Program action
 
-void st7789_init(void);
-void st7789_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_end, rt_uint16_t y_end, void *pcolor);
-void st7789_set_orientation(rt_uint8_t orientation);
+void ssud_st7789_init(void);
+void ssud_st7789_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_end, rt_uint16_t y_end, void *pcolor);
+void ssud_st7789_set_orientation(rt_uint8_t orientation);
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
-#endif /* CONFIG_TFT_DISPLAY_CONTROLLER_ST7789 */
+#endif /* SSUD_DISP_CONTROLLER_ST7789 */
 
 #endif /* ST7789_H  */

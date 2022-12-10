@@ -9,21 +9,21 @@
 
 /* Because each bsp of RT-Thread handles rt_spi_bus_attach_device differently as a private variable, it is 
 difficult to get consistency here. You will need to complete the following function according to your bsp */
-void spi_device_attach(void)
+void ssud_spi_device_attach(void)
 {
     /* Please complete according to your bsp */
-    rt_hw_spi_device_attach(PKG_SPI_BUS_NAME, PKG_SPI_DEV_NAME, PIN_STPORT(PKG_SPI_CS_PIN), PIN_STPIN(PKG_SPI_CS_PIN));
+    rt_hw_spi_device_attach(SSUD_DRV_SPI_BUS_NAME, SSUD_DRV_SPI_DEV_NAME, PIN_STPORT(SSUD_DRV_SPI_CS_PIN), PIN_STPIN(SSUD_DRV_SPI_CS_PIN));
 }
 
 static int hw_driver_port_init(void)
 {
-    spi_device_attach();
-    spi_port_config();
-    spi_gpio_config();
-#if defined(PKG_DISP_BACKLIGHT_SWITCH) || defined(PKG_DISP_BACKLIGHT_PWM)
-    backlight_init();
+    ssud_spi_device_attach();
+    ssud_spi_port_config();
+    ssud_spi_gpio_config();
+#if defined(SSUD_BACKLIGHT_SWITCH) || defined(SSUD_BACKLIGHT_PWM)
+    ssud_backlight_init();
 #endif
-    disp_driver_init();
+    ssud_disp_driver_init();
     return 0;
 }
 

@@ -1,14 +1,12 @@
 #ifndef ILI9163C_H
 #define ILI9163C_H
 
-#ifdef PKG_DISPLAY_CONTROLLER_ILI9163C
+#ifdef SSUD_DISP_CONTROLLER_ILI9163C
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
-#define ILI9163C_INVERT_COLORS 1
 
 // ILI9163C specific commands used in init
 #define ILI9163C_NOP 0x00
@@ -58,14 +56,14 @@ extern "C"
 #define ILI9163C_GMCTRP1 0xE0
 #define ILI9163C_GMCTRN1 0xE1
 
-void ili9163c_init(void);
-void ili9163c_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_end, rt_uint16_t y_end, void *pcolor);
-void ili9163c_set_orientation(rt_uint8_t orientation);
+void ssud_ili9163c_init(void);
+void ssud_ili9163c_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_end, rt_uint16_t y_end, void *pcolor);
+void ssud_ili9163c_set_orientation(rt_uint8_t orientation);
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
-#endif /* PKG_DISPLAY_CONTROLLER_ILI9163C */
+#endif /* SSUD_DISP_CONTROLLER_ILI9163C */
 
 #endif /*ILI9163C_H*/

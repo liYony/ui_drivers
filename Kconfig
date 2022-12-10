@@ -1,182 +1,148 @@
-menuconfig PKG_USING_UI_DRIVERS
-    bool "ui drivers"
+menuconfig PKG_USING_SSUD
+    bool "spi screen unified drive"
     default n
 
-if PKG_USING_UI_DRIVERS
+if PKG_USING_SSUD
 
-    choice
-        prompt "Display driver IC"
-        default PKG_DISPLAY_CONTROLLER_ST7789
-        help
-            Your lcd screen driver
-
-        config PKG_DISPLAY_CONTROLLER_ST7789
-            bool "st7789"
-
-        config PKG_DISPLAY_CONTROLLER_ST7735S
-            bool "st7735s"
-            
-        config PKG_DISPLAY_CONTROLLER_ILI9163C
-            bool "ili9163c"
-    endchoice
-
-    menu "Backlight control config"
+    menu "Screen information"
         choice
-            default PKG_DISP_BACKLIGHT_SWITCH
-            prompt "Backlight Control" if \
-                (! ( PKG_DISPLAY_CONTROLLER_SH1107 || PKG_DISPLAY_CONTROLLER_SSD1306 ) )
+            prompt "Screen display controller"
+            default SSUD_DISP_CONTROLLER_ST7789
+            config SSUD_DISP_CONTROLLER_ST7789
+                bool "st7789"
 
-            config PKG_DISP_BACKLIGHT_OFF
+            config SSUD_DISP_CONTROLLER_ST7735S
+                bool "st7735s"
+                
+            config SSUD_DISP_CONTROLLER_ILI9163C
+                bool "ili9163c"
+        endchoice
+
+        choice
+            prompt "Screen display orientation"
+            default SSUD_DISP_ORIENTATION_PORTRAIT if !SSUD_DISP_CONTROLLER_SSD1306
+            default SSUD_DISP_ORIENTATION_LANDSCAPE if SSUD_DISP_CONTROLLER_SSD1306
+            config SSUD_DISP_ORIENTATION_PORTRAIT
+                bool "Portrait" if !SSUD_DISP_CONTROLLER_SSD1306
+            config SSUD_DISP_ORIENTATION_PORTRAIT_INVERTED
+                bool "Portrait inverted" if !SSUD_DISP_CONTROLLER_SSD1306
+            config SSUD_DISP_ORIENTATION_LANDSCAPE
+                bool "Landscape"
+            config SSUD_DISP_ORIENTATION_LANDSCAPE_INVERTED
+                bool "Landscape inverted"
+        endchoice
+
+        config SSUD_DISP_ORIENTATION
+            int
+            default 0 if SSUD_DISP_ORIENTATION_PORTRAIT
+            default 1 if SSUD_DISP_ORIENTATION_PORTRAIT_INVERTED
+            default 2 if SSUD_DISP_ORIENTATION_LANDSCAPE
+            default 3 if SSUD_DISP_ORIENTATION_LANDSCAPE_INVERTED
+
+        config SSUD_DISP_HOR_RES
+            int "Horizontal resolution"
+            range 1 2000
+            default 240  
+
+        config SSUD_DISP_VER_RES
+            int "Vertical resolution"
+            range 1 2000
+            default 240
+
+        config SSUD_DISP_SOFT_RESET
+            bool "Use software reset"
+            default n
+
+        config SSUD_DISP_INVERT_COLORS
+            bool "Screen invert colors"
+            default n
+    endmenu
+    
+    menu "Screen backlight control configuration"
+        choice
+            default SSUD_BACKLIGHT_SWITCH
+            prompt "Backlight Control" if (! ( SSUD_DISP_CONTROLLER_SH1107 || SSUD_DISP_CONTROLLER_SSD1306 ) )
+
+            config SSUD_BACKLIGHT_OFF
                 bool
                 prompt "Not Used"
 
-            config PKG_DISP_BACKLIGHT_SWITCH
+            config SSUD_BACKLIGHT_SWITCH
                 bool
                 prompt "Switch control"
 
-            config PKG_DISP_BACKLIGHT_PWM
+            config SSUD_BACKLIGHT_PWM
                 bool
                 prompt "PWM control"
         endchoice
 
-        if !PKG_DISP_BACKLIGHT_OFF
+        if !SSUD_BACKLIGHT_OFF
             choice
                 prompt "Backlight active level"
-                default PKG_DISP_ACTIVE_ISHIGH
+                default SSUD_BACKLIGHT_ACTIVE_ISHIGH
 
-                config PKG_DISP_ACTIVE_ISHIGH
+                config SSUD_BACKLIGHT_ACTIVE_ISHIGH
                     bool
                     prompt "high"
 
-                config PKG_DISP_ACTIVE_ISLOW
+                config SSUD_BACKLIGHT_ACTIVE_ISLOW
                     bool
                     prompt "low"
             endchoice
         endif
 
-        if PKG_DISP_BACKLIGHT_SWITCH
-            config PKG_BACKLIGHT_SWITCH_PIN
+        if SSUD_BACKLIGHT_SWITCH
+            config SSUD_BACKLIGHT_SWITCH_PIN
                 int "backlight switch pin"
-                range 1 176
-                default 20
+                default 31
         endif
 
-        if PKG_DISP_BACKLIGHT_PWM
-            config PKG_BACKLIGHT_PWM_NAME
+        if SSUD_BACKLIGHT_PWM
+            config SSUD_BACKLIGHT_PWM_DEVNAME
                 string "backlight pwm device name"
                 default "pwm1"
-            config PKG_BACKLIGHT_PWM_CH
+            config SSUD_BACKLIGHT_PWM_CHANNEL
                 int "backlight pwm channel num"
                 default 1
-            config PKG_BACKLIGHT_PWM_BRIGHTNESS
+            config SSUD_BACKLIGHT_PWM_BRIGHTNESS
                 int "default backlight brightness"
                 range 0 100
                 default 50
         endif
     endmenu
 
-    menu "Peripheral driver information"
+    menu "Screen peripheral driver configuration"
         menu "SPI peripheral information"
-            config PKG_SPI_BUS_NAME
+            config SSUD_DRV_SPI_BUS_NAME
                 string "the spi bus name"
                 default "spi1"
-            config PKG_SPI_DEV_NAME
-                string "the spi device name"
-                default "lcddev"  
-            config PKG_SPI_CS_PIN
-                int "the spi cs pin number"
-                range -1 176
-                default 116
-            config PKG_SPI_RES_PIN
-                int "the spi res pin number"
-                range -1 176
-                default 116
-            config PKG_SPI_DC_PIN
-                int "the spi dc pin number"
-                range -1 176
-                default 116         
-            choice
-                prompt "Select a custom frequency."
-                default PKG_SPI_CLK_DIVIDER_4 if PKG_DISPLAY_CONTROLLER_ST7789 ||PKG_DISPLAY_CONTROLLER_GC9A01 || PKG_DISPLAY_CONTROLLER_ILI9486
-                default PKG_SPI_CLK_DIVIDER_2 if PKG_DISPLAY_CONTROLLER_ST7796S
-                default PKG_SPI_CLK_DIVIDER_5 if PKG_DISPLAY_CONTROLLER_ILI9481
-                default PKG_SPI_CLK_DIVIDER_3 if PKG_DISPLAY_CONTROLLER_HX8357
-                default PKG_SPI_CLK_DIVIDER_10 if PKG_DISPLAY_CONTROLLER_SH1107
-                default PKG_SPI_CLK_DIVIDER_16 if PKG_DISPLAY_CONTROLLER_JD79653A || PKG_DISPLAY_CONTROLLER_UC8151D
-                default PKG_SPI_CLK_DIVIDER_2
 
-                config PKG_SPI_CLK_DIVIDER_1
-                    bool "80 MHz"
-                config PKG_SPI_CLK_DIVIDER_2
-                    bool "40 MHz"
-                config PKG_SPI_CLK_DIVIDER_3
-                    bool "26.67 MHz"
-                config PKG_SPI_CLK_DIVIDER_4
-                    bool "20 MHz"
-                config PKG_SPI_CLK_DIVIDER_5
-                    bool "16 MHz"
-                config PKG_SPI_CLK_DIVIDER_6
-                    bool "13.33 MHz"
-                config PKG_SPI_CLK_DIVIDER_7
-                    bool "11.43 MHz"
-                config PKG_SPI_CLK_DIVIDER_8
-                    bool "10 MHz"
-                config PKG_SPI_CLK_DIVIDER_9
-                    bool "8.89 MHz"
-                config PKG_SPI_CLK_DIVIDER_10
-                    bool "8 MHz"
-                config PKG_SPI_CLK_DIVIDER_12
-                    bool "6.67 MHz"
-                config PKG_SPI_CLK_DIVIDER_16
-                    bool "5 MHz"
-                config PKG_SPI_CLK_DIVIDER_20
-                    bool "4 MHz"
-                config PKG_SPI_CLK_DIVIDER_24
-                    bool "3.33 MHz"
-                config PKG_SPI_CLK_DIVIDER_32
-                    bool "2.5 MHz"
-                config PKG_SPI_CLK_DIVIDER_40
-                    bool "2 MHz"
-                config PKG_SPI_CLK_DIVIDER_48
-                    bool "1.67 MHz"
-                config PKG_SPI_CLK_DIVIDER_80
-                    bool "1 MHz"
-            endchoice
+            config SSUD_DRV_SPI_DEV_NAME
+                string "the spi device name"
+                default "lcddev"
+
+            config SSUD_DRV_SPI_CS_PIN
+                int "the spi cs pin number"
+                default 116
+
+            config SSUD_DRV_SPI_RES_PIN
+                int "the spi res pin number"
+                default 116
+
+            config SSUD_DRV_SPI_DC_PIN
+                int "the spi dc pin number"
+                default 116
+
+            config  SSUD_DRV_SPI_FREQUENCY
+                int "the spi bus clock frequency(MHz)"
+                range 0 400
+                default 20 if SSUD_DISP_CONTROLLER_ST7789 ||SSUD_DISP_CONTROLLER_GC9A01 || SSUD_DISP_CONTROLLER_ILI9486
+                default 40 if SSUD_DISP_CONTROLLER_ST7796S
+                default 16 if SSUD_DISP_CONTROLLER_ILI9481
+                default 25 if SSUD_DISP_CONTROLLER_HX8357
+                default 8 if SSUD_DISP_CONTROLLER_SH1107
+                default 5 if SSUD_DISP_CONTROLLER_JD79653A || SSUD_DISP_CONTROLLER_UC8151D
+                default 40
         endmenu
     endmenu
-    menu "Display screen information"
-        choice DISPLAY_ORIENTATION
-            prompt "Display orientation"
-            default PKG_DISPLAY_ORIENTATION_PORTRAIT if !PKG_DISPLAY_CONTROLLER_SSD1306
-            default PKG_DISPLAY_ORIENTATION_LANDSCAPE if PKG_DISPLAY_CONTROLLER_SSD1306
-            config PKG_DISPLAY_ORIENTATION_PORTRAIT
-                bool "Portrait" if !PKG_DISPLAY_CONTROLLER_SSD1306
-            config PKG_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
-                bool "Portrait inverted" if !PKG_DISPLAY_CONTROLLER_SSD1306
-            config PKG_DISPLAY_ORIENTATION_LANDSCAPE
-                bool "Landscape"
-            config PKG_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
-                bool "Landscape inverted"
-        endchoice
-
-        config PKG_INDEX_DISPLAY_ORIENTATION
-            int
-            default 0 if PKG_DISPLAY_ORIENTATION_PORTRAIT
-            default 1 if PKG_DISPLAY_ORIENTATION_PORTRAIT_INVERTED
-            default 2 if PKG_DISPLAY_ORIENTATION_LANDSCAPE
-            default 3 if PKG_DISPLAY_ORIENTATION_LANDSCAPE_INVERTED
-
-        config PKG_DISPLAY_SOFT_RES
-            bool "Soft reset - use software reset instead of reset pin"
-            default n
-        config PKG_DISPLAY_HOR_RES_MAX
-            int "Horizontal resolution"
-            range 1 2000
-            default 240            
-        config PKG_DISPLAY_VER_RES_MAX
-            int "Vertical resolution"
-            range 1 2000
-            default 240
-    endmenu
-
 endif 
