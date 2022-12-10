@@ -18,7 +18,10 @@ if PKG_USING_SSUD
                 bool "ili9163c"
 
             config SSUD_DISP_CONTROLLER_ILI9341
-                bool "ili9141"
+                bool "ili9341"
+
+            config SSUD_DISP_CONTROLLER_GC9A01
+                bool "GC9A01"                
         endchoice
 
         choice
