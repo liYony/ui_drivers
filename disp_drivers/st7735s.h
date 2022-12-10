@@ -1,6 +1,8 @@
 #ifndef ST7735S_H
 #define ST7735S_H
 
+#ifdef PKG_DISPLAY_CONTROLLER_ST7735S
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -104,5 +106,7 @@ void st7735s_set_orientation(rt_uint8_t orientation);
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
+
+#endif /* PKG_DISPLAY_CONTROLLER_ST7735S */
 
 #endif /*ST7735S_H*/

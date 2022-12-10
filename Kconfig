@@ -14,7 +14,10 @@ if PKG_USING_UI_DRIVERS
             bool "st7789"
 
         config PKG_DISPLAY_CONTROLLER_ST7735S
-            bool "st7735"
+            bool "st7735s"
+            
+        config PKG_DISPLAY_CONTROLLER_ILI9163C
+            bool "ili9163c"
     endchoice
 
     menu "Backlight control config"

@@ -94,6 +94,6 @@ void st7789_set_orientation(rt_uint8_t orientation);
 } /* extern "C" */
 #endif
 
-#endif /* ST7789_H  */
+#endif /* CONFIG_TFT_DISPLAY_CONTROLLER_ST7789 */
 
-#endif // CONFIG_TFT_DISPLAY_CONTROLLER_ST7789
+#endif /* ST7789_H  */
