@@ -1,7 +1,6 @@
 #include "disp_driver.h"
 
 #ifdef SSUD_DISP_CONTROLLER_ILI9341
-#include "ili9341.h"
 
 void ssud_ili9341_init(void)
 {
