@@ -1,7 +1,7 @@
 #include "disp_driver.h"
 
 #ifdef SSUD_DISP_CONTROLLER_ST7789
-#include "st7789.h"
+
 
 void ssud_st7789_init(void)
 {
@@ -55,7 +55,7 @@ void ssud_st7789_init(void)
         }
         cmd++;
     }
-    
+
     ssud_st7789_set_orientation(SSUD_DISP_ORIENTATION);
 }
 
