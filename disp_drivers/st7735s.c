@@ -1,7 +1,6 @@
 #include "disp_driver.h"
 
 #ifdef SSUD_DISP_CONTROLLER_ST7735S
-#include "st7735s.h"
 
 rt_uint8_t st7735s_portrait_mode = 0;
 

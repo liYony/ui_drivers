@@ -3,6 +3,9 @@
 
 #ifdef SSUD_DISP_CONTROLLER_ST7735S
 
+#include <rtdevice.h>
+#include <rtthread.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

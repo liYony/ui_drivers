@@ -1,7 +1,6 @@
 #include "disp_driver.h"
 
 #ifdef SSUD_DISP_CONTROLLER_ILI9163C
-#include "ili9163c.h"
 
 void ssud_ili9163c_init(void)
 {
