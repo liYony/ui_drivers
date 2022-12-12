@@ -3,10 +3,10 @@
 static int fill_test(int argc, char **argv)
 {
     rt_uint16_t color1 = BLUE;
-    rt_uint16_t color2 = RED;
+    rt_uint16_t color2 = GRAY;
     rt_uint16_t color3 = GREEN;
-    rt_uint16_t color4 = WHITE;
-    rt_uint16_t color5 = YELLOW;
+    rt_uint16_t color4 = YELLOW;
+    rt_uint16_t color5 = RED;
     rt_uint16_t xend, yend;
 #if defined(SSUD_BACKLIGHT_SWITCH) || defined(SSUD_BACKLIGHT_PWM)
     if (argc == 2)
@@ -31,10 +31,13 @@ static int fill_test(int argc, char **argv)
     ssud_disp_driver_fill(0, 0, xend/2-1, yend/2-1, &color2);
     ssud_disp_driver_fill(xend/2, yend/2, xend-1, yend-1, &color3);
     ssud_disp_driver_fill(xend/4, yend/4, xend/4*3-1, yend/4*3-1, &color4);
-    ssud_disp_driver_fill(0, 0, 0, yend-1, &color1);
-    ssud_disp_driver_fill(0, 0, xend-1, 0, &color1);
-    ssud_disp_driver_fill(xend-1, 0, xend-1, yend-1, &color1);
-    ssud_disp_driver_fill(0, yend-1, xend-1, yend-1, &color1);
+
+    ssud_disp_driver_fill(0, 0, 0, yend-1, &color5);
+    ssud_disp_driver_fill(0, 0, xend-1, 0, &color5);
+    ssud_disp_driver_fill(xend-1, 0, xend-1, yend-1, &color5);
+    ssud_disp_driver_fill(0, yend-1, xend-1, yend-1, &color5);
+
+    ssud_disp_driver_fill(xend/8, yend/8, xend/4, yend/4, &color4);
     return 0;
 }
 
