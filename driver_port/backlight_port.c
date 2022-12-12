@@ -11,6 +11,7 @@ void ssud_backlight_init(void)
 #elif defined SSUD_BACKLIGHT_SWITCH
     ssud_backlight_switch_init();
 #endif
+    ssud_backlight_light_set(SSUD_BACKLIGHT_PWM_BRIGHTNESS);
 }
 
 static void ssud_backlight_switch_init(void)
