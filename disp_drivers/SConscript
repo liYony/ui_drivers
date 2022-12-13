@@ -19,6 +19,9 @@ if GetDepend(['SSUD_DISP_CONTROLLER_ST7735S']):
 if GetDepend(['SSUD_DISP_CONTROLLER_ST7789']):
     src += ['st7789.c']
 
+if GetDepend(['SSUD_DISP_CONTROLLER_HX8357']):
+    src += ['hx8357.c']
+
 group = DefineGroup('ui_drivers', src, depend = [''], CPPPATH = inc)
 
 Return('group')
