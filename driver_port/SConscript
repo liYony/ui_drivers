@@ -1,8 +1,11 @@
 from building import *
 
 cwd = GetCurrentDir()
-src = Glob('*.c')
+src = Glob('spi_port.c')
 inc = [cwd]
+
+if GetDepend(['SSUD_BACKLIGHT_SWITCH']) and GetDepend(['SSUD_BACKLIGHT_PWM']):
+    src += ['backlight_port.c']
 
 group = DefineGroup('ui_drivers', src, depend = [''], CPPPATH = inc)
 

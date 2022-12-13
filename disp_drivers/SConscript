@@ -1,8 +1,23 @@
 from building import *
 
 cwd = GetCurrentDir()
-src = Glob('*.c')
+src = Glob('disp_driver.c')
 inc = [cwd]
+
+if GetDepend(['SSUD_DISP_CONTROLLER_GC9A01']):
+    src += ['GC9A01.c']
+
+if GetDepend(['SSUD_DISP_CONTROLLER_ILI9163C']):
+    src += ['ili9163c.c']
+
+if GetDepend(['SSUD_DISP_CONTROLLER_ILI9341']):
+    src += ['ili9341.c']
+
+if GetDepend(['SSUD_DISP_CONTROLLER_ST7735S']):
+    src += ['st7735s.c']
+
+if GetDepend(['SSUD_DISP_CONTROLLER_ST7789']):
+    src += ['st7789.c']
 
 group = DefineGroup('ui_drivers', src, depend = [''], CPPPATH = inc)
 
