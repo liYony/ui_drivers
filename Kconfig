@@ -27,6 +27,11 @@ if PKG_USING_SSUD
                 bool "hx8357"
         endchoice
 
+        if SSUD_DISP_CONTROLLER_ST7735S
+            config SSUD_DISP_CONTROLLER_ST7735S_160x80
+                bool "st7735s display is 160x80"
+        endif
+
         choice
             prompt "Screen display orientation"
             default SSUD_DISP_ORIENTATION_PORTRAIT if !SSUD_DISP_CONTROLLER_SSD1306
