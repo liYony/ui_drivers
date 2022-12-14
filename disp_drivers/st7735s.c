@@ -58,20 +58,47 @@ void ssud_st7735s_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_e
 {
     rt_uint8_t data[4];
 
+// For 160 x 80 display (BGR, inverted, 26 / 1 offset)
+#if (SSUD_DISP_HOR_RES == 80) && (SSUD_DISP_VER_RES == 160)
+    #if defined (SSUD_DISP_ORIENTATION_PORTRAIT) || defined (SSUD_DISP_ORIENTATION_PORTRAIT_INVERTED)
+        x_start += 26;
+        x_end += 26;
+        y_start += 1;
+        y_end += 1;
+    #elif defined (SSUD_DISP_ORIENTATION_LANDSCAPE) || defined (SSUD_DISP_ORIENTATION_LANDSCAPE_INVERTED)
+        x_start += 1;
+        x_end += 1;
+        y_start += 26;
+        y_end += 26;
+    #endif
+#elif (SSUD_DISP_HOR_RES == 160) && (SSUD_DISP_VER_RES == 80)
+    #if defined (SSUD_DISP_ORIENTATION_PORTRAIT) || defined (SSUD_DISP_ORIENTATION_PORTRAIT_INVERTED)
+        x_start += 26;
+        x_end += 26;
+        y_start += 1;
+        y_end += 1;
+    #elif defined (SSUD_DISP_ORIENTATION_LANDSCAPE) || defined (SSUD_DISP_ORIENTATION_LANDSCAPE_INVERTED)
+        x_start += 1;
+        x_end += 1;
+        y_start += 26;
+        y_end += 26;
+    #endif
+#endif
+
     /*Column addresses*/
     ssud_spi_write_cmd(0x2A);
     data[0] = (x_start >> 8) & 0xFF;
-    data[1] = (x_start & 0xFF) + (st7735s_portrait_mode ? COLSTART : ROWSTART);
+    data[1] = (x_start & 0xFF) ;
     data[2] = (x_end >> 8) & 0xFF;
-    data[3] = (x_end & 0xFF) + (st7735s_portrait_mode ? COLSTART : ROWSTART);
+    data[3] = (x_end & 0xFF) ;
     ssud_spi_write_data(data, 4);
 
     /*Page addresses*/
     ssud_spi_write_cmd(0x2B);
     data[0] = (y_start >> 8) & 0xFF;
-    data[1] = (y_start & 0xFF) + (st7735s_portrait_mode ? ROWSTART : COLSTART);
+    data[1] = (y_start & 0xFF) ;
     data[2] = (y_end >> 8) & 0xFF;
-    data[3] = (y_end & 0xFF) + (st7735s_portrait_mode ? ROWSTART : COLSTART);
+    data[3] = (y_end & 0xFF) ;
     ssud_spi_write_data(data, 4);
 
     /*Memory write*/
@@ -82,12 +109,12 @@ void ssud_st7735s_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_e
 void ssud_st7735s_set_orientation(rt_uint8_t orientation)
 {
     /*
-        Portrait:  0x88 = ST77XX_MADCTL_MX | ST77XX_MADCTL_MY | ST77XX_MADCTL_RGB
-        Portrait inverted:  0x48 = ST77XX_MADCTL_MX | ST77XX_MADCTL_MY | ST77XX_MADCTL_RGB
-        Landscape: 0x28 = ST77XX_MADCTL_MY | ST77XX_MADCTL_MV | ST77XX_MADCTL_RGB
-        Landscape inverted: 0xE8 = ST77XX_MADCTL_MY | ST77XX_MADCTL_MV | ST77XX_MADCTL_RGB
+        Portrait:  0xC8 = ST77XX_MADCTL_MY| ST77XX_MADCTL_MX | ST77XX_MADCTL_RGB
+        Portrait inverted:  0x08 = ST77XX_MADCTL_RGB
+        Landscape: 0xA8 = ST77XX_MADCTL_MY | ST77XX_MADCTL_MV | ST77XX_MADCTL_RGB
+        Landscape inverted: 0x68 = ST77XX_MADCTL_MX | ST77XX_MADCTL_MV | ST77XX_MADCTL_RGB
     */
-    rt_uint8_t data[] = {0x88, 0x48, 0x28, 0xE8};
+    rt_uint8_t data[] = {0xC8, 0x08, 0xA8, 0x68};
     ssud_spi_write_cmd(ST7735_MADCTL);
     ssud_spi_write_data((void *)&data[orientation], 1);
 }
