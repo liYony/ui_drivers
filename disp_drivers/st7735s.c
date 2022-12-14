@@ -86,7 +86,7 @@ void ssud_st7735s_set_orientation(rt_uint8_t orientation)
         Landscape: 0xA0 = ST77XX_MADCTL_MY | ST77XX_MADCTL_MV | ST77XX_MADCTL_RGB
         Remark: "inverted" is ignored here
     */
-    rt_uint8_t data[] = {0xC0, 0xC0, 0xA0, 0xA0};
+    rt_uint8_t data[] = {0x88, 0x48, 0x28, 0xE8};
     ssud_spi_write_cmd(ST7735_MADCTL);
     ssud_spi_write_data((void *)&data[orientation], 1);
 }

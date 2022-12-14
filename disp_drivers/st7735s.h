@@ -17,8 +17,8 @@ extern "C" {
 //
 
 // For 160 x 80 display (BGR, inverted, 26 / 1 offset)
-#define COLSTART            0
-#define ROWSTART            0
+#define COLSTART            26
+#define ROWSTART            1
 
 // Delay between some initialisation commands
 #define TFT_INIT_DELAY      0x80
