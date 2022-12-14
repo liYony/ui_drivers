@@ -10,8 +10,6 @@
 extern "C" {
 #endif
 
-#define GC9A01_INVERT_COLORS 1
-
 void ssud_GC9A01_init(void);
 void ssud_GC9A01_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_end, rt_uint16_t y_end, void *pcolor);
 void ssud_GC9A01_set_orientation(rt_uint8_t orientation);
