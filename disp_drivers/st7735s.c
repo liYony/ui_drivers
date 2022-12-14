@@ -82,9 +82,10 @@ void ssud_st7735s_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_e
 void ssud_st7735s_set_orientation(rt_uint8_t orientation)
 {
     /*
-        Portrait:  0xC0 = ST77XX_MADCTL_MX | ST77XX_MADCTL_MY | ST77XX_MADCTL_RGB
-        Landscape: 0xA0 = ST77XX_MADCTL_MY | ST77XX_MADCTL_MV | ST77XX_MADCTL_RGB
-        Remark: "inverted" is ignored here
+        Portrait:  0x88 = ST77XX_MADCTL_MX | ST77XX_MADCTL_MY | ST77XX_MADCTL_RGB
+        Portrait inverted:  0x48 = ST77XX_MADCTL_MX | ST77XX_MADCTL_MY | ST77XX_MADCTL_RGB
+        Landscape: 0x28 = ST77XX_MADCTL_MY | ST77XX_MADCTL_MV | ST77XX_MADCTL_RGB
+        Landscape inverted: 0xE8 = ST77XX_MADCTL_MY | ST77XX_MADCTL_MV | ST77XX_MADCTL_RGB
     */
     rt_uint8_t data[] = {0x88, 0x48, 0x28, 0xE8};
     ssud_spi_write_cmd(ST7735_MADCTL);
