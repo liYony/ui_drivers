@@ -2,8 +2,6 @@
 
 #ifdef SSUD_DISP_CONTROLLER_ST7735S
 
-rt_uint8_t st7735s_portrait_mode = 0;
-
 void ssud_st7735s_init(void)
 {
     lcd_init_cmd_t init_cmds[] = {
@@ -44,12 +42,6 @@ void ssud_st7735s_init(void)
         }
         cmd++;
     }
-
-#if (SSUD_DISP_ORIENTATION == 0) || (SSUD_DISP_ORIENTATION == 1)
-    st7735s_portrait_mode = 1;
-#else
-    st7735s_portrait_mode = 0;
-#endif
 
     ssud_st7735s_set_orientation(SSUD_DISP_ORIENTATION);
 }

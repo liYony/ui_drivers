@@ -2,8 +2,6 @@
 
 #if defined(SSUD_BACKLIGHT_SWITCH) || defined(SSUD_BACKLIGHT_PWM)
 
-struct rt_device_pwm *backlight_pwm;
-
 #ifdef SSUD_BACKLIGHT_SWITCH_PIN
 static void ssud_backlight_switch_init(void)
 {
@@ -12,6 +10,8 @@ static void ssud_backlight_switch_init(void)
 #endif /* SSUD_BACKLIGHT_SWITCH_PIN */
 
 #ifdef SSUD_BACKLIGHT_PWM_DEVNAME
+struct rt_device_pwm *backlight_pwm;
+
 static void ssud_backlight_pwm_init(void)
 {
     backlight_pwm = (struct rt_device_pwm *)rt_device_find(SSUD_BACKLIGHT_PWM_DEVNAME);
