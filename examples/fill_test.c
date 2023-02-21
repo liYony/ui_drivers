@@ -46,7 +46,7 @@ static int fill_test(int argc, char **argv)
 MSH_CMD_EXPORT(fill_test, fill_test);
 
 
-static int clear_all(int argc, char **argv)
+static int rash_all(int argc, char **argv)
 {
     int16_t i;
     rt_uint16_t colorx;
@@ -73,12 +73,27 @@ static int clear_all(int argc, char **argv)
         full_all(color1);
     }
 }
-MSH_CMD_EXPORT(clear_all, clear_all);
+MSH_CMD_EXPORT(rash_all, clear_all);
 
 
 static void point_tesr(void)
 {
-    lcd_point(10,10,color5);
+    int8_t x,y,i;
+    x=0;
+    y=0;
+    for (i = 0; i < 40; i++)
+    {
+        lcd_point(x,y,color5);
+        x++;y++;
+    }
+    x=40;
+    y=40;
+    for (i = 0; i < 40; i++)
+    {
+        lcd_point(x,y,color5);
+        x++;y--;
+    }
+
 }
 MSH_CMD_EXPORT(point_tesr, point);
 
@@ -89,5 +104,3 @@ static void circle_line(void)
     draw_line(0,80,80,100,color4);
 }
 MSH_CMD_EXPORT(circle_line, draw_circle);
-
-
