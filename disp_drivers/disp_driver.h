@@ -72,5 +72,8 @@ typedef struct
 
 void ssud_disp_driver_init(void);
 void ssud_disp_driver_fill(rt_uint16_t x_start, rt_uint16_t y_start, rt_uint16_t x_end, rt_uint16_t y_end, void *pcolor);
-
+void full_all(void *pcolor);
+void lcd_point(int x, int y ,void *pcolor);
+void draw_circle(int x, int y, int r, void *pcolor);
+void draw_line(int x1,int y1,int x2,int y2,void *pcolor);
 #endif // !__DISP_DRIVER_H_

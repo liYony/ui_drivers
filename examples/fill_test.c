@@ -1,13 +1,15 @@
 #include "disp_driver.h"
 
-static int fill_test(int argc, char **argv)
-{
     rt_uint16_t color1 = BLUE;
     rt_uint16_t color2 = GRAY;
     rt_uint16_t color3 = GREEN;
     rt_uint16_t color4 = YELLOW;
     rt_uint16_t color5 = RED;
+    rt_uint16_t color6 = WHITE;
+    rt_uint16_t color7 = BLACK;
     rt_uint16_t xend, yend;
+static int fill_test(int argc, char **argv)
+{
 #if defined(SSUD_BACKLIGHT_SWITCH) || defined(SSUD_BACKLIGHT_PWM)
     if (argc == 2)
     {
@@ -42,3 +44,63 @@ static int fill_test(int argc, char **argv)
 }
 
 MSH_CMD_EXPORT(fill_test, fill_test);
+
+
+static int rash_all(int argc, char **argv)
+{
+    int16_t i;
+    rt_uint16_t colorx;
+    if (argc == 2)
+    {
+        i=atoi(argv[1]);
+        switch(i)
+        {
+            case 1:colorx=color1;break;
+            case 2:colorx=color2;break;
+            case 3:colorx=color3;break;
+            case 4:colorx=color4;break;
+            case 5:colorx=color5;break;
+            case 6:colorx=color6;break;
+            case 7:colorx=color7;break;
+            default:
+            break;
+
+        }
+        full_all(colorx);
+    }
+    else
+    {
+        full_all(color1);
+    }
+}
+MSH_CMD_EXPORT(rash_all, clear_all);
+
+
+static void point_tesr(void)
+{
+    int8_t x,y,i;
+    x=0;
+    y=0;
+    for (i = 0; i < 40; i++)
+    {
+        lcd_point(x,y,color5);
+        x++;y++;
+    }
+    x=40;
+    y=40;
+    for (i = 0; i < 40; i++)
+    {
+        lcd_point(x,y,color5);
+        x++;y--;
+    }
+
+}
+MSH_CMD_EXPORT(point_tesr, point);
+
+
+static void circle_line(void)
+{
+    draw_circle(40,80,40,color5);
+    draw_line(0,80,80,100,color4);
+}
+MSH_CMD_EXPORT(circle_line, draw_circle);
